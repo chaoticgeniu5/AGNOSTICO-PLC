@@ -1,0 +1,53 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy root package files
+COPY package*.json ./
+
+# Copy workspace packages
+COPY packages/backend/package*.json ./packages/backend/
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY packages/backend ./packages/backend
+
+# Generate Prisma client
+WORKDIR /app/packages/backend
+RUN npx prisma generate
+
+# Build TypeScript
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install production dependencies
+COPY package*.json ./
+COPY packages/backend/package*.json ./packages/backend/
+RUN npm install --production
+
+# Copy built files
+COPY --from=builder /app/packages/backend/dist ./packages/backend/dist
+COPY --from=builder /app/packages/backend/node_modules ./packages/backend/node_modules
+COPY packages/backend/prisma ./packages/backend/prisma
+
+# Generate Prisma client in production
+WORKDIR /app/packages/backend
+RUN npx prisma generate
+
+# Create data directory
+RUN mkdir -p /app/data
+
+# Run migrations and seed on startup
+COPY docker-entrypoint.sh /app/
+RUN chmod +x /app/docker-entrypoint.sh
+
+EXPOSE 3000 4840 5502
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
+CMD ["node", "dist/index.js"]

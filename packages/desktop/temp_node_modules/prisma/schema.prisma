@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  role      String   @default("operator") // admin | operator
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// SQLite doesn't support enums, using String with comments for valid values
+// PLCType: INPUT | OUTPUT
+// PLCBrand: SIEMENS | ALLEN_BRADLEY | SCHNEIDER | OMRON | GENERIC
+// PLCProtocol: S7COMM | ETHERNET_IP | MODBUS_TCP | MODBUS_RTU | FINS | OPCUA
+// SignalType: SINE | RAMP | RANDOM | DIGITAL
+
+model PLC {
+  id          String      @id @default(uuid())
+  name        String
+  brand       String      // SIEMENS | ALLEN_BRADLEY | SCHNEIDER | OMRON | GENERIC
+  protocol    String      // S7COMM | ETHERNET_IP | MODBUS_TCP | MODBUS_RTU | FINS | OPCUA
+  type        String      // INPUT | OUTPUT
+  enabled     Boolean     @default(true)
+  port        Int?
+  endpoint    String?
+  config      String?     // JSON config
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  tags        Tag[]
+  mappings    TagMapping[] @relation("OutputPLC")
+}
+
+model Tag {
+  id          String      @id @default(uuid())
+  plcId       String
+  name        String
+  address     String
+  dataType    String      @default("FLOAT")
+  value       Float       @default(0)
+  unit        String?
+  quality     String      @default("GOOD")
+  signalType  String?     @default("SINE") // SINE | RAMP | RANDOM | DIGITAL
+  frequency   Float?      @default(1.0)
+  amplitude   Float?      @default(100.0)
+  offset      Float?      @default(0.0)
+  updatedAt   DateTime    @updatedAt
+
+  plc         PLC         @relation(fields: [plcId], references: [id], onDelete: Cascade)
+  mappings    TagMapping[]
+
+  @@unique([plcId, name])
+}
+
+model TagMapping {
+  id              String   @id @default(uuid())
+  inputTagId      String
+  outputPlcId     String
+  outputTagName   String
+  outputAddress   String
+  scaleFactor     Float    @default(1.0)
+  offset          Float    @default(0.0)
+  enabled         Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  inputTag        Tag      @relation(fields: [inputTagId], references: [id], onDelete: Cascade)
+  outputPlc       PLC      @relation("OutputPLC", fields: [outputPlcId], references: [id], onDelete: Cascade)
+
+  @@unique([inputTagId, outputPlcId, outputTagName])
+}
+
+model SystemLog {
+  id        String   @id @default(uuid())
+  level     String   // INFO | WARN | ERROR
+  source    String
+  message   String
+  metadata  String?  // JSON
+  createdAt DateTime @default(now())
+}

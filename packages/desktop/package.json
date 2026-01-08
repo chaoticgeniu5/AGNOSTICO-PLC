@@ -1,0 +1,101 @@
+{
+  "name": "@industrial-gateway/desktop",
+  "version": "1.0.0",
+  "description": "Industrial Gateway Platform - Desktop Application for Windows",
+  "main": "dist/main.js",
+  "author": "Industrial Gateway Team",
+  "license": "Commercial",
+  "scripts": {
+    "dev": "electron .",
+    "prebuild": "node prepare-backend.js",
+    "build": "tsc && electron-builder",
+    "build:win": "tsc && electron-builder --win",
+    "build:win:portable": "tsc && electron-builder --win portable",
+    "build:all": "tsc && electron-builder --win --linux"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "electron": "28.1.0",
+    "electron-builder": "^24.9.1",
+    "typescript": "^5.3.3"
+  },
+  "build": {
+    "appId": "com.industrial-gateway.platform",
+    "productName": "Industrial Gateway Platform",
+    "copyright": "Copyright © 2024 Industrial Gateway",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [],
+    "extraResources": [
+      {
+        "from": "../backend/dist",
+        "to": "app/backend/dist"
+      },
+      {
+        "from": "temp_node_modules/node_modules",
+        "to": "app/backend/node_modules"
+      },
+      {
+        "from": "../backend/package.json",
+        "to": "app/backend/package.json"
+      },
+      {
+        "from": "../backend/prisma",
+        "to": "app/backend/prisma"
+      },
+      {
+        "from": "../../node_modules/@prisma",
+        "to": "app/backend/node_modules/@prisma"
+      },
+      {
+        "from": "../../node_modules/.prisma",
+        "to": "app/backend/node_modules/.prisma"
+      },
+      {
+        "from": "../frontend/dist",
+        "to": "app/frontend"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-Setup.${ext}",
+      "publisherName": "Industrial Gateway",
+      "verifyUpdateCodeSignature": false,
+      "sign": null,
+      "signingHashAlgorithms": []
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Industrial Gateway Platform",
+      "uninstallDisplayName": "Industrial Gateway Platform"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-Portable.${ext}"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Development"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: industrial-gateway-backend
+    ports:
+      - "3000:3000"
+      - "4840:4840"  # OPC UA
+      - "5502:5502"  # Modbus TCP
+    environment:
+      - DATABASE_URL=file:/app/data/dev.db
+      - JWT_SECRET=${JWT_SECRET:-change-this-in-production}
+      - PORT=3000
+      - HOST=0.0.0.0
+      - OPCUA_PORT=4840
+      - MODBUS_PORT=5502
+      - NODE_ENV=production
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - industrial-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: industrial-gateway-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - industrial-network
+
+networks:
+  industrial-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

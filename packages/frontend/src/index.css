@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  background: #0a0e14;
+  color: #e6e8eb;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121820;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a2332;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3342;
+}
+
+/* Terminal effect */
+.terminal-text {
+  text-shadow: 0 0 5px rgba(0, 217, 255, 0.5);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.glow-green {
+  box-shadow: 0 0 10px rgba(0, 255, 159, 0.5);
+}
+
+/* Animations */
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scan-line {
+  animation: scan-line 8s linear infinite;
+}

@@ -1,0 +1,32 @@
+{
+  "name": "industrial-gateway-platform",
+  "version": "1.0.0",
+  "description": "Universal Industrial Gateway & PLC Emulator - Enterprise MVP",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "start": "npm run start -w backend",
+    "db:migrate": "npm run db:migrate -w backend",
+    "db:seed": "npm run db:seed -w backend",
+    "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist"
+  },
+  "keywords": [
+    "industrial",
+    "gateway",
+    "plc",
+    "emulator",
+    "opc-ua",
+    "modbus",
+    "scada",
+    "iiot"
+  ],
+  "author": "Industrial Automation Platform",
+  "license": "MIT",
+  "devDependencies": {
+    "7zip-bin": "^5.2.0"
+  }
+}

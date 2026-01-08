@@ -1,0 +1,25 @@
+node_modules
+dist
+build
+.env
+.env.local
+*.log
+.DS_Store
+.vscode
+.idea
+*.db
+*.db-journal
+prisma/migrations
+.docker
+
+# Temporary files
+nul
+*.tmp
+*.swp
+*~
+
+# OS files
+Thumbs.db
+
+# Claude
+.claude

@@ -1,0 +1,32 @@
+[Unit]
+Description=Industrial Gateway Platform
+Documentation=https://github.com/industrial-gateway/platform
+After=network.target
+
+[Service]
+Type=simple
+User=industrial
+Group=industrial
+WorkingDirectory=/opt/industrial-gateway/packages/backend
+EnvironmentFile=/etc/industrial-gateway.env
+ExecStart=/usr/bin/node /opt/industrial-gateway/packages/backend/dist/index.js
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/industrial-gateway
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=industrial-gateway
+
+[Install]
+WantedBy=multi-user.target
