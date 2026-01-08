@@ -135,8 +135,8 @@ AGNOSTICO/
 
 ```bash
 # Clone this repo
-git clone https://github.com/YOUR_USERNAME/AGNOSTICO.git
-cd AGNOSTICO
+git clone https://github.com/chaoticgeniu5/AGNOSTICO-PLC.git
+cd AGNOSTICO-PLC
 
 # Start the entire stack
 docker-compose up -d
@@ -154,7 +154,7 @@ The system auto-seeds with demo PLCs and flowing data. You'll see results immedi
 
 Because sometimes you just want binaries and don't care about the source:
 
-1. Go to **[Releases](https://github.com/YOUR_USERNAME/AGNOSTICO/releases)**
+1. Go to **[Releases](https://github.com/chaoticgeniu5/AGNOSTICO-PLC/releases)**
 2. Download the latest version for your platform:
    - `agnostico-gateway-windows-x64.zip` (Windows)
    - `agnostico-gateway-linux-x64.tar.gz` (Linux)
@@ -412,7 +412,7 @@ Built with:
 
 **Having issues?**
 - Check the [docs](./docs/)
-- Search [existing issues](https://github.com/YOUR_USERNAME/AGNOSTICO/issues)
+- Search [existing issues](https://github.com/chaoticgeniu5/AGNOSTICO-PLC/issues)
 - Create a new issue with logs
 
 **Need help with implementation or customization?**

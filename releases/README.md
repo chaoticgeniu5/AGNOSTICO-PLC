@@ -2,7 +2,7 @@
 
 ## Download Compiled Binaries
 
-Instead of building from source, you can download ready-to-run binaries from the **[GitHub Releases](https://github.com/YOUR_USERNAME/AGNOSTICO/releases)** page.
+Instead of building from source, you can download ready-to-run binaries from the **[GitHub Releases](https://github.com/chaoticgeniu5/AGNOSTICO-PLC/releases)** page.
 
 ### Available Platforms
 
@@ -12,7 +12,7 @@ Instead of building from source, you can download ready-to-run binaries from the
 
 ### How to Download
 
-1. Go to the [Releases page](https://github.com/YOUR_USERNAME/AGNOSTICO/releases)
+1. Go to the [Releases page](https://github.com/chaoticgeniu5/AGNOSTICO-PLC/releases)
 2. Find the latest version
 3. Download the appropriate package for your operating system
 4. Extract and run
